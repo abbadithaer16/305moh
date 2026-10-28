@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Event Horizon</title>
+    <meta name="claude:viewport-fit-sides" content="cover" />
+    <meta name="description" content="Event Horizon — Beyond the Known. A scroll-driven approach to a black hole." />
+    <meta name="theme-color" content="#030304" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+  </head>
+  <body>
+    <div class="stage" id="stage" aria-hidden="true"></div>
+
+    <header class="chrome chrome--top">
+      <span class="mark">Event Horizon</span>
+      <span class="meta">Visual proof · The approach</span>
+    </header>
+
+    <div class="beats">
+      <section class="beat beat--title" data-beat="title">
+        <h1 class="title"><span>Event</span> <em>Horizon</em></h1>
+        <p class="tagline">Beyond the Known</p>
+      </section>
+      <section class="beat beat--side" data-beat="bend">
+        <p class="line">Light that passes close is bent around the dark. The far side of the disk rises above it.</p>
+      </section>
+      <section class="beat beat--side beat--edge" data-beat="edge">
+        <p class="line">Past the edge ahead, nothing returns. Not even light.</p>
+      </section>
+    </div>
+
+    <footer class="chrome chrome--bottom">
+      <dl class="readouts">
+        <div><dt>Distance</dt><dd><span data-readout="dist">36.0</span> r<sub>s</sub></dd></div>
+        <div><dt>Clock rate</dt><dd>×<span data-readout="clock">0.986</span></dd></div>
+      </dl>
+      <span class="cue" data-cue>Scroll<span class="cue-more"> to approach</span></span>
+    </footer>
+
+    <main id="journey" class="journey" aria-label="Scroll to move toward the black hole"></main>
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

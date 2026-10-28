@@ -1,0 +1,129 @@
+/* Layout: a fixed full-bleed render behind everything; type sits on the frame edges like a
+   film title card, and the page scroll is only the camera's track. */
+:root {
+  --void: #030304;          /* matches the shader's deep-space floor */
+  --ink: #ece4d6;           /* warm off-white, lit by the disk */
+  --ink-dim: rgba(236, 228, 214, 0.58);
+  --ink-faint: rgba(236, 228, 214, 0.22);
+  --ember: #f0a35b;         /* disk accent, used only for small markers */
+  --font-display: 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  --edge: clamp(16px, 3.2vw, 40px);
+  color-scheme: dark;
+}
+
+html { background: var(--void); }
+body {
+  background: var(--void);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.stage { position: fixed; inset: 0; z-index: 0; }
+.stage canvas { display: block; }
+.stage--fallback {
+  background: var(--void) var(--poster-wide) center / cover no-repeat;
+  transform: scale(calc(1 + var(--push, 0) * 0.9));
+}
+.stage--fallback canvas { display: none; }
+@media (max-aspect-ratio: 1/1) { .stage--fallback { background-image: var(--poster-tall); } }
+
+.journey { position: relative; z-index: 1; height: 520svh; }
+
+/* ---------- frame chrome ---------- */
+.chrome {
+  position: fixed;
+  left: 0; right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  padding-left: calc(var(--gutter-l) + max(0px, var(--edge) - 16px));
+  padding-right: calc(var(--gutter-r) + max(0px, var(--edge) - 16px));
+  pointer-events: none;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.chrome--top { top: 0; padding-top: calc(env(safe-area-inset-top, 0px) + var(--edge)); align-items: baseline; }
+.chrome--bottom { bottom: 0; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + var(--edge)); }
+.mark { color: var(--ink); }
+
+.readouts { display: flex; gap: clamp(20px, 4vw, 48px); margin: 0; }
+.readouts dt { color: var(--ink-faint); margin-bottom: 6px; white-space: nowrap; }
+.readouts dd {
+  margin: 0;
+  color: var(--ink);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  font-variant-numeric: tabular-nums;
+}
+.readouts sub { font-size: 0.7em; }
+.cue { white-space: nowrap; display: inline-flex; align-items: center; gap: 10px; }
+.cue::before { content: ''; width: 28px; height: 1px; background: var(--ember); }
+
+/* ---------- type beats ---------- */
+.beats { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+.beat {
+  position: absolute;
+  left: 0; right: 0;
+  padding-left: calc(var(--gutter-l) + max(0px, var(--edge) - 16px));
+  padding-right: calc(var(--gutter-r) + max(0px, var(--edge) - 16px));
+}
+.beat--title { top: 13svh; text-align: center; }
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(44px, 10.5vw, 168px);
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  font-optical-sizing: auto;
+}
+.title em { font-style: italic; }
+.tagline {
+  margin: 22px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+/* Scrim under the side copy so it reads over the bright disk. */
+.beats::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 55svh;
+  background: radial-gradient(120% 90% at 0% 100%, rgba(3, 3, 4, 0.72) 0%, rgba(3, 3, 4, 0.35) 45%, transparent 75%);
+  opacity: var(--scrim, 0);
+  z-index: -1;
+}
+.beat--side { bottom: calc(env(safe-area-inset-bottom, 0px) + 112px); visibility: hidden; opacity: 0; }
+.line {
+  margin: 0;
+  max-width: 30ch;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1.22;
+  text-wrap: balance;
+}
+
+/* The last line sits inside the shadow itself. */
+.beat--edge { bottom: auto; top: 34svh; text-align: center; }
+.beat--edge .line { margin-inline: auto; max-width: 22ch; }
+
+@media (max-aspect-ratio: 1/1) {
+  .beat--title { top: 15svh; }
+  .title { font-size: clamp(48px, 15vw, 120px); }
+  .title span, .title em { display: block; }
+  .chrome .meta { display: none; }
+  .cue-more { display: none; }
+}
