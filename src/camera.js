@@ -7,6 +7,7 @@ export const cam = {
   roll: -3,
   fov: 1,      // multiplier on the base field of view
   exposure: 1.05,
+  shiftX: 0,   // lens shift, in short-side units: moves the hole across the frame
   shiftY: 0.2, // pushes the hole down the frame under the opening title
 }
 

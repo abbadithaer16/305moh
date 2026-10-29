@@ -19,7 +19,11 @@ export const adaptive = !params.has('fixed')
 export const still = params.has('still') ? Number(params.get('still')) || 0 : null
 export const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches
 
+// ?dpr=0.2 forces the render scale (automated scroll tests on a software GPU).
+const forcedDpr = Number(params.get('dpr')) || null
+
 export function baseDpr(width, height) {
+  if (forcedDpr) return forcedDpr
   const budget = Math.sqrt(tier.pixels / Math.max(1, width * height))
   return Math.max(0.5, Math.min(window.devicePixelRatio || 1, budget))
 }

@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import * as THREE from 'three'
 import BlackHole from './BlackHole.jsx'
 import { initChoreography } from './choreography.js'
+import { cam } from './camera.js'
 import { baseDpr, hasWebGL2, tierName, still } from './quality.js'
 import posterWide from './assets/poster-wide.jpg'
 import posterTall from './assets/poster-tall.jpg'
@@ -35,8 +36,10 @@ if (hasWebGL2()) {
   useFallback()
 }
 
-const tl = initChoreography()
+const choreo = initChoreography()
 if (still !== null) {
-  tl.scrollTrigger.disable(false)
-  tl.progress(still)
+  choreo.tl.scrollTrigger.disable(false)
+  choreo.tl.progress(still)
 }
+// Handle for the automated scroll tests.
+if (new URLSearchParams(location.search).has('debug')) window.__eh = { choreo, cam }

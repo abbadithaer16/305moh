@@ -14,16 +14,21 @@
   color-scheme: dark;
 }
 
-html { background: var(--void); }
+html { background: var(--void); overscroll-behavior: none; }
 body {
+  margin: 0;
   background: var(--void);
   color: var(--ink);
   font-family: var(--font-mono);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  overscroll-behavior: none;
 }
 
-.stage { position: fixed; inset: 0; z-index: 0; }
+.stage { position: fixed; inset: 0 0 auto; height: 100vh; z-index: 0; background: var(--void); }
+/* Size the render to the large viewport so Safari's collapsing toolbars never uncover the
+   page edge and the canvas doesn't resize mid-scroll. */
+@supports (height: 100lvh) { .stage { height: 100lvh; } }
 .stage canvas { display: block; }
 .stage--fallback {
   background: var(--void) var(--poster-wide) center / cover no-repeat;
@@ -96,16 +101,6 @@ body {
   text-transform: uppercase;
   color: var(--ink-dim);
 }
-/* Scrim under the side copy so it reads over the bright disk. */
-.beats::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 55svh;
-  background: radial-gradient(120% 90% at 0% 100%, rgba(3, 3, 4, 0.72) 0%, rgba(3, 3, 4, 0.35) 45%, transparent 75%);
-  opacity: var(--scrim, 0);
-  z-index: -1;
-}
 .beat--side { bottom: calc(env(safe-area-inset-bottom, 0px) + 112px); visibility: hidden; opacity: 0; }
 .line {
   margin: 0;
@@ -116,14 +111,23 @@ body {
   text-wrap: balance;
 }
 
-/* The last line sits inside the shadow itself. */
-.beat--edge { bottom: auto; top: 34svh; text-align: center; }
-.beat--edge .line { margin-inline: auto; max-width: 22ch; }
+/* Second line: in the dark sky above the disk while the camera rises over it. */
+.beat--bend { bottom: auto; top: calc(env(safe-area-inset-top, 0px) + var(--edge) + 52px); }
+.beat--bend .line { max-width: 34ch; font-size: clamp(20px, 2vw, 28px); }
+
+/* Closing line: in the dark upper-left while the hole holds the right third. */
+.beat--edge { bottom: auto; top: 24svh; text-align: left; }
+.beat--edge .line { max-width: 19ch; font-size: clamp(26px, 3.1vw, 44px); }
 
 @media (max-aspect-ratio: 1/1) {
   .beat--title { top: 15svh; }
   .title { font-size: clamp(48px, 15vw, 120px); }
   .title span, .title em { display: block; }
   .chrome .meta { display: none; }
+  /* 9:16 closing frame: the hole is in the upper half, the line sits in the clear band below. */
+  .beat--bend { top: calc(env(safe-area-inset-top, 0px) + 13svh); text-align: center; }
+  .beat--bend .line { margin-inline: auto; max-width: 22ch; font-size: clamp(22px, 6.2vw, 30px); }
+  .beat--edge { top: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + 118px); text-align: center; }
+  .beat--edge .line { margin-inline: auto; max-width: 17ch; font-size: clamp(26px, 7.4vw, 40px); }
   .cue-more { display: none; }
 }

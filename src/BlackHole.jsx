@@ -67,7 +67,7 @@ export default function BlackHole() {
     u.uTanHalf.value = tanHalf
     u.uPixelAngle.value = (2 * tanHalf) / Math.min(size.x, size.y)
     u.uExposure.value = cam.exposure
-    u.uShift.value.set(0, cam.shiftY)
+    u.uShift.value.set(cam.shiftX, cam.shiftY)
 
     if (still !== null) {
       if (++perf.current.frames === 3) {
